@@ -213,7 +213,9 @@ if [ $RUN_WRITABLE = TRUE ]; then
       ${DIR}/gen_writable
 
   CC_W=`cat $DIR/gen_writable | sed -n "$="`
-  if [ $CC_W != "0" ]; then
+  if [ $CC_W = "0" ]; then
+    echo OK
+  else
     PRISTINE=FALSE
     echo FAILURE
     echo
@@ -237,7 +239,6 @@ if [ $RUN_WRITABLE = TRUE ]; then
       exit 1
     fi
   fi
-  echo OK
 else
   echo SKIPPED
 fi
@@ -257,7 +258,9 @@ if [ $RUN_ARTIFACTS = TRUE ]; then
   CC_AK=`cat $DIR/gen_keep | sed -n "$="`
   CC_AU=`cat $DIR/gen_unloaded | sed -n "$="`
 
-  if [ $CC_AK$CC_AU != "00" ]; then
+  if [ $CC_AK$CC_AU = "00" ]; then
+    echo OK
+  else
     PRISTINE=FALSE
     echo FAILURE
     echo
@@ -282,7 +285,6 @@ if [ $RUN_ARTIFACTS = TRUE ]; then
       exit 1
     fi
   fi
-  echo OK
 else
   echo SKIPPED
 fi
@@ -302,7 +304,9 @@ if [ $RUN_GIT_STATUS = TRUE ]; then
   GIT_C=`cat $DIR/git_changes | sed -n "$="`
   GIT_U=`cat $DIR/git_untrack | sed -n "$="`
 
-  if [ $GIT_C$GIT_U != "00" ]; then
+  if [ $GIT_C$GIT_U = "00" ]; then
+    echo OK
+  else
     PRISTINE=FALSE
     echo FAILURE
     echo
@@ -324,7 +328,6 @@ if [ $RUN_GIT_STATUS = TRUE ]; then
       exit 1
     fi
   fi
-  echo OK
 else
   echo SKIPPED
 fi
@@ -343,7 +346,9 @@ if [ $RUN_CC_UNTRACK = TRUE ]; then
       $DIR/cc_untrack
   CC_U=`cat $DIR/cc_untrack | sed -n "$="`
 
-  if [ $CC_U != "0" ]; then
+  if [ $CC_U = "0" ]; then
+    echo OK
+  else
     PRISTINE=FALSE
     echo FAILURE
     echo
@@ -362,7 +367,6 @@ if [ $RUN_CC_UNTRACK = TRUE ]; then
       exit 1
     fi
   fi
-  echo OK
 else
   echo SKIPPED
 fi
@@ -380,7 +384,9 @@ if [ $RUN_CC_CHECKOUTS = TRUE ]; then
       $DIR/cc_checkout
   CC_C=`cat $DIR/cc_checkout | sed -n "$="`
 
-  if [ $CC_C != "0" ]; then
+  if [ $CC_C = "0" ]; then
+    echo OK
+  else
     PRISTINE=FALSE
     echo FAILURE
     echo
@@ -401,7 +407,6 @@ if [ $RUN_CC_CHECKOUTS = TRUE ]; then
       exit 1
     fi
   fi
-  echo OK
 else
   echo SKIPPED
 fi
@@ -420,7 +425,9 @@ if [ $RUN_CC_HIJACKS = TRUE ]; then
       $DIR/cc_hijack
   CC_H=`cat $DIR/cc_hijack | sed -n "$="`
 
-  if [ $CC_H != "0" ]; then
+  if [ $CC_H = "0" ]; then
+    echo OK
+  else
     PRISTINE=FALSE
     echo FAILURE
     echo
@@ -439,7 +446,6 @@ if [ $RUN_CC_HIJACKS = TRUE ]; then
       exit 1
     fi
   fi
-  echo OK
 else
   echo SKIPPED
 fi
