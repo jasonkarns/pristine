@@ -214,6 +214,7 @@ if [ $RUN_WRITABLE = TRUE ]; then
 
   CC_W=`cat $DIR/gen_writable | sed -n "$="`
   if [ $CC_W != "0" ]; then
+    PRISTINE=FALSE
     echo FAILURE
     echo
     echo Snapshot is not pristine
@@ -257,6 +258,7 @@ if [ $RUN_ARTIFACTS = TRUE ]; then
   CC_AU=`cat $DIR/gen_unloaded | sed -n "$="`
 
   if [ $CC_AK$CC_AU != "00" ]; then
+    PRISTINE=FALSE
     echo FAILURE
     echo
     echo There exist untracked .keep, or .unloaded artifacts which 
@@ -301,6 +303,7 @@ if [ $RUN_GIT_STATUS = TRUE ]; then
   GIT_U=`cat $DIR/git_untrack | sed -n "$="`
 
   if [ $GIT_C$GIT_U != "00" ]; then
+    PRISTINE=FALSE
     echo FAILURE
     echo
     echo Git does not consider the repository pristine
@@ -342,6 +345,7 @@ if [ $RUN_CC_UNTRACK = TRUE ]; then
   CC_U=`cat $DIR/cc_untrack | sed -n "$="`
 
   if [ $CC_U != "0" ]; then
+    PRISTINE=FALSE
     echo FAILURE
     echo
     echo ClearCase does not consider the repository pristine
@@ -379,6 +383,7 @@ if [ $RUN_CC_CHECKOUTS = TRUE ]; then
   CC_C=`cat $DIR/cc_checkout | sed -n "$="`
 
   if [ $CC_C != "0" ]; then
+    PRISTINE=FALSE
     echo FAILURE
     echo
     echo ClearCase has discovered checkouts
@@ -419,6 +424,7 @@ if [ $RUN_CC_HIJACKS = TRUE ]; then
   CC_H=`cat $DIR/cc_hijack | sed -n "$="`
 
   if [ $CC_H != "0" ]; then
+    PRISTINE=FALSE
     echo FAILURE
     echo
     echo ClearCase does not consider the repository pristine
@@ -447,6 +453,13 @@ fi
 #
 # Finished:
 #
-echo SUCCESS: Snapshot is pristine
-rm -rf $DIR
-exit 0
+echo
+if [ $PRISTINE = FALSE ]; then
+  echo FAILURE: Snapshot is not pristine
+  echo Log directory has been preserved: $DIR
+  exit 1
+else
+  echo SUCCESS: Snapshot is pristine
+  rm -rf $DIR
+  exit 0
+fi
