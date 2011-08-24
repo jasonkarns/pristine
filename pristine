@@ -250,8 +250,10 @@ if [ $RUN_ARTIFACTS = TRUE ]; then
     echo 
     echo Neither Git nor ClearCase has been consulted.
     echo
-    echo Artifacts\(.keep, .unloaded\):
+    echo Artifacts \(.keep\):
     cat $DIR/gen_keep
+    echo
+    echo Artifacts \(.unloaded\):
     cat $DIR/gen_unloaded
     echo
     echo Suggestion: Run git-status and compare with
@@ -333,7 +335,7 @@ if [ $RUN_CC_UNTRACK = TRUE ]; then
     echo and/or bring ClearCase to a pristine state
     echo
     echo New untracked files:
-    cat $DIR/git_untrack
+    cat $DIR/cc_untrack
     echo
     if [ $RUN_ALL != TRUE ]; then
       echo FAILURE: Snapshot is not pristine
@@ -407,7 +409,7 @@ if [ $RUN_CC_HIJACKS = TRUE ]; then
     echo and/or bring ClearCase to a pristine state
     echo
     echo Hijacked tracked files:
-    cat $DIR/git_changes
+    cat $DIR/cc_hijack
     echo
     if [ $RUN_ALL != TRUE ]; then
       echo FAILURE: Snapshot is not pristine
