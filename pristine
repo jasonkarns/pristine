@@ -206,7 +206,7 @@ fi
 #    #grep -v $DIR |\
 #    #grep -v .git |\
 #
-echo -n Checking \(-w\) Writable...\ \ \ \ 
+echo -n Checking \(-w\) Writable Files........\ \ 
 if [ $RUN_WRITABLE = TRUE ]; then
   find $FILE_LIST $DIR_LIST -type f -perm +220 |\
       grep -v -f $EXCLUDE >\
@@ -249,7 +249,7 @@ fi
 # specific extensions:
 #   .keep and .unloaded
 #
-echo -n Checking \(-a\) Artifacts...\ \ \ 
+echo -n Checking \(-a\) ClearCase Artifacts...\ \ 
 if [ $RUN_ARTIFACTS = TRUE ]; then
 
   find $FILE_LIST $DIR_LIST -type f -name *.keep > ${DIR}/gen_keep
@@ -293,7 +293,7 @@ fi
 # a commit or sees
 # unexpected files
 #
-echo -n Checking \(-g\) Git status...\ \ 
+echo -n Checking \(-g\) Git Status............\ \ 
 if [ $RUN_GIT_STATUS = TRUE ]; then
 
   git diff --name-only HEAD $FILE_LIST $DIR_LIST > $DIR/git_changes
@@ -333,7 +333,7 @@ fi
 # Check for any files ClearCase
 # considers untracked
 #
-echo -n Checking \(-u\) CC Untrack...\ \ 
+echo -n Checking \(-u\) ClearCase Untracked...\ \ 
 if [ $RUN_CC_UNTRACK = TRUE ]; then
 
   cleartool ls -recurse -view -short $FILE_LIST $DIR_LIST |\
@@ -370,7 +370,7 @@ fi
 # Check for any ClearCase checkouts
 # that need to be checked in or cancelled.
 #
-echo -n Checking \(-c\) CC Checkouts...
+echo -n Checking \(-c\) ClearCase Checkouts...\ \ 
 if [ $RUN_CC_CHECKOUTS = TRUE ]; then
 
   cleartool lsco -me -recurse -short $FILE_LIST $DIR_LIST >\
@@ -409,7 +409,7 @@ fi
 # Check for any files ClearCase
 # considers hijacked files and directories
 #
-echo -n Checking \(-h\) CC Hijacks...\ \ 
+echo -n Checking \(-h\) ClearCase Hijacks.....\ \ 
 if [ $RUN_CC_HIJACKS = TRUE ]; then
 
   cleartool ls -recurse $FILE_LIST $DIR_LIST |\
