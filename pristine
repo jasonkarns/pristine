@@ -48,12 +48,11 @@
 #
 # Init:
 #
-# Default settings if no flags passes [-wagch]
+# Default settings if no flags passes [-waguch]
 #         for writable, artifacts, etc
 # Default DIR_LIST icludes all child directories
 
-# default skip CC_CHECKOUTS
-FLAGS="-wagchu"
+FLAGS="-waguch"
 USAGE_MSG="usage: `echo $0 | sed s:.*/::` [--help] [-[waguch]] [ dir... ]"
 
 
@@ -63,6 +62,7 @@ USAGE_MSG="usage: `echo $0 | sed s:.*/::` [--help] [-[waguch]] [ dir... ]"
 # create a fresh 'pristine' dir in .git as $DIR
 # after appending gitignore to an exclude file
 #
+
 EXCLUDE=`pwd`/tmp.exclude
 echo .git/ > $EXCLUDE
 PREV_DIR=`pwd`
