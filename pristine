@@ -211,7 +211,8 @@ if [ $RUN_WRITABLE = "TRUE" ]; then
       grep -v -f $EXCLUDE >\
       ${DIR}/gen_writable
 
-  if [ `cat $DIR/gen_writable | wc -l` != "0" ]; then
+  CC_W=`cat $DIR/gen_writable | sed -n "$="`
+  if [ $CC_W != "0" ]; then
     echo FAILURE
     echo
     echo Snapshot is not pristine
@@ -249,11 +250,10 @@ if [ $RUN_ARTIFACTS = "TRUE" ]; then
 
   find $FILE_LIST $DIR_LIST -type f -name *.keep > ${DIR}/gen_keep
   find $DIR_LIST -type d -name *.unloaded > ${DIR}/gen_unloaded
-  
-  GEN_K=`cat $DIR/gen_keep|wc -l`
-  GEN_U=`cat $DIR/gen_unloaded|wc -l`
+  CC_AK=`cat $DIR/gen_keep | sed -n "$="`
+  CC_AU=`cat $DIR/gen_unloaded | sed -n "$="`
 
-  if [ $GEN_K$GEN_U != "00" ]; then
+  if [ $CC_AK$CC_AU != "00" ]; then
     echo FAILURE
     echo
     echo There exist untracked .keep, or .unloaded artifacts which 
@@ -292,8 +292,9 @@ if [ $RUN_GIT_STATUS = "TRUE" ]; then
 
   git diff --name-only HEAD $FILE_LIST $DIR_LIST > $DIR/git_changes
   git ls-files --others | grep -v -f  $EXCLUDE > $DIR/git_untrack
-  GIT_C=`cat $DIR/git_changes | wc -l`
-  GIT_U=`cat $DIR/git_untrack | wc -l`
+  GIT_C=`cat $DIR/git_changes | sed -n "$="`
+  GIT_U=`cat $DIR/git_untrack | sed -n "$="`
+
   if [ $GIT_C$GIT_U != "00" ]; then
     echo FAILURE
     echo
@@ -331,7 +332,7 @@ if [ $RUN_CC_UNTRACK = "TRUE" ]; then
   cleartool ls -recurse -view -short $FILE_LIST $DIR_LIST |\
       grep -v -f $EXCLUDE >\
       $DIR/cc_untrack
-  CC_U=`cat $DIR/cc_untrack | wc -l`
+  CC_U=`cat $DIR/cc_untrack | sed -n "$="`
 
   if [ $CC_U != "0" ]; then
     echo FAILURE
@@ -366,8 +367,9 @@ if [ $RUN_CC_CHECKOUTS = "TRUE" ]; then
 
   cleartool lsco -me -recurse -short $FILE_LIST $DIR_LIST >\
       $DIR/cc_checkout
+  CC_C=`cat $DIR/cc_checkout | sed -n "$="`
 
-  if [ `cat $DIR/cc_checkout | wc -l` != "0" ]; then
+  if [ $CC_C != "0" ]; then
     echo FAILURE
     echo
     echo ClearCase has discovered checkouts
@@ -403,7 +405,7 @@ if [ $RUN_CC_HIJACKS = "TRUE" ]; then
   cleartool ls -recurse $FILE_LIST $DIR_LIST |\
       grep "\[hijacked\]" >\
       $DIR/cc_hijack
-  CC_H=`cat $DIR/cc_hijack | wc -l`
+  CC_H=`cat $DIR/cc_hijack | sed -n "$="`
 
   if [ $CC_H != "0" ]; then
     echo FAILURE
