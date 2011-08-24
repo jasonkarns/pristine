@@ -107,6 +107,7 @@ FILE_LIST="`ls -F|grep -v -f $EXCLUDE|grep -v /| sed s:\ :\?:g`"
 
 if [ $# -eq 0 ]; then
   TEMP=
+  RUN_ALL=TRUE
 elif [ "$1" = "--help" ]; then
   echo $USAGE_MSG
   echo
@@ -230,8 +231,10 @@ if [ $RUN_WRITABLE = TRUE ]; then
     echo Consult git-status or perhaps
     echo check files out from ClearCase.
     echo
-    echo FAILURE: Snapshot is not pristine
-    exit 1
+    if [ $RUN_ALL != TRUE ]; then
+      echo FAILURE: Snapshot is not pristine
+      exit 1
+    fi
   fi
   echo OK
 else
@@ -272,8 +275,10 @@ if [ $RUN_ARTIFACTS = TRUE ]; then
     echo ClearCases modified files to determine if
     echo files have been deleted upstream.
     echo
-    echo FAILURE: Snapshot is not pristine
-    exit 1
+    if [ $RUN_ALL != TRUE ]; then
+      echo FAILURE: Snapshot is not pristine
+      exit 1
+    fi
   fi
   echo OK
 else
@@ -312,8 +317,10 @@ if [ $RUN_GIT_STATUS = TRUE ]; then
     echo New untracked files:
     cat $DIR/git_untrack
     echo
-    echo FAILURE: Snapshot is not pristine
-    exit 1
+    if [ $RUN_ALL != TRUE ]; then
+      echo FAILURE: Snapshot is not pristine
+      exit 1
+    fi
   fi
   echo OK
 else
@@ -348,8 +355,10 @@ if [ $RUN_CC_UNTRACK = TRUE ]; then
     echo New untracked files:
     cat $DIR/git_untrack
     echo
-    echo FAILURE: Snapshot is not pristine
-    exit 1
+    if [ $RUN_ALL != TRUE ]; then
+      echo FAILURE: Snapshot is not pristine
+      exit 1
+    fi
   fi
   echo OK
 else
@@ -385,8 +394,10 @@ if [ $RUN_CC_CHECKOUTS = TRUE ]; then
     echo Checked out files:
     cat $DIR/cc_checkout
     echo
-    echo FAILURE: Snapshot is not pristine
-    exit 1
+    if [ $RUN_ALL != TRUE ]; then
+      echo FAILURE: Snapshot is not pristine
+      exit 1
+    fi
   fi
   echo OK
 else
@@ -421,8 +432,10 @@ if [ $RUN_CC_HIJACKS = TRUE ]; then
     echo Hijacked tracked files:
     cat $DIR/git_changes
     echo
-    echo FAILURE: Snapshot is not pristine
-    exit 1
+    if [ $RUN_ALL != TRUE ]; then
+      echo FAILURE: Snapshot is not pristine
+      exit 1
+    fi
   fi
   echo OK
 else
