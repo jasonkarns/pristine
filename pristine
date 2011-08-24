@@ -212,10 +212,7 @@ if [ $RUN_WRITABLE = TRUE ]; then
       grep -v -f $EXCLUDE >\
       ${DIR}/gen_writable
 
-  CC_W=`cat $DIR/gen_writable | sed -n "$="`
-  if [ $CC_W = "0" ]; then
-    echo OK
-  else
+  if [ -s $DIR/gen_writable ]; then
     PRISTINE=FALSE
     echo FAILURE
     echo
@@ -238,6 +235,8 @@ if [ $RUN_WRITABLE = TRUE ]; then
       echo Log directory has been preserved: $DIR
       exit 1
     fi
+  else
+    echo OK
   fi
 else
   echo SKIPPED
@@ -255,12 +254,8 @@ if [ $RUN_ARTIFACTS = TRUE ]; then
 
   find $FILE_LIST $DIR_LIST -type f -name *.keep > ${DIR}/gen_keep
   find $DIR_LIST -type d -name *.unloaded > ${DIR}/gen_unloaded
-  CC_AK=`cat $DIR/gen_keep | sed -n "$="`
-  CC_AU=`cat $DIR/gen_unloaded | sed -n "$="`
 
-  if [ $CC_AK$CC_AU = "00" ]; then
-    echo OK
-  else
+  if [ -s $DIR/gen_keep ] || [ -s $DIR/gen_unloaded ]; then
     PRISTINE=FALSE
     echo FAILURE
     echo
@@ -284,6 +279,8 @@ if [ $RUN_ARTIFACTS = TRUE ]; then
       echo Log directory has been preserved: $DIR
       exit 1
     fi
+  else
+    echo OK
   fi
 else
   echo SKIPPED
@@ -301,12 +298,8 @@ if [ $RUN_GIT_STATUS = TRUE ]; then
 
   git diff --name-only HEAD $FILE_LIST $DIR_LIST > $DIR/git_changes
   git ls-files --others | grep -v -f  $EXCLUDE > $DIR/git_untrack
-  GIT_C=`cat $DIR/git_changes | sed -n "$="`
-  GIT_U=`cat $DIR/git_untrack | sed -n "$="`
 
-  if [ $GIT_C$GIT_U = "00" ]; then
-    echo OK
-  else
+  if [ -s $DIR/git_changes ] || [ -s $DIR/git_untrack ]; then
     PRISTINE=FALSE
     echo FAILURE
     echo
@@ -327,6 +320,8 @@ if [ $RUN_GIT_STATUS = TRUE ]; then
       echo Log directory has been preserved: $DIR
       exit 1
     fi
+  else
+    echo OK
   fi
 else
   echo SKIPPED
@@ -342,13 +337,9 @@ echo -n Checking \(-u\) CC Untrack...\ \
 if [ $RUN_CC_UNTRACK = TRUE ]; then
 
   cleartool ls -recurse -view -short $FILE_LIST $DIR_LIST |\
-      grep -v -f $EXCLUDE >\
-      $DIR/cc_untrack
-  CC_U=`cat $DIR/cc_untrack | sed -n "$="`
+      grep -v -f $EXCLUDE > $DIR/cc_untrack
 
-  if [ $CC_U = "0" ]; then
-    echo OK
-  else
+  if [ -s $DIR/cc_untrack ]; then
     PRISTINE=FALSE
     echo FAILURE
     echo
@@ -366,6 +357,8 @@ if [ $RUN_CC_UNTRACK = TRUE ]; then
       echo Log directory has been preserved: $DIR
       exit 1
     fi
+  else
+    echo OK
   fi
 else
   echo SKIPPED
@@ -382,11 +375,8 @@ if [ $RUN_CC_CHECKOUTS = TRUE ]; then
 
   cleartool lsco -me -recurse -short $FILE_LIST $DIR_LIST >\
       $DIR/cc_checkout
-  CC_C=`cat $DIR/cc_checkout | sed -n "$="`
 
-  if [ $CC_C = "0" ]; then
-    echo OK
-  else
+  if [ -s $DIR/cc_checkout ]; then
     PRISTINE=FALSE
     echo FAILURE
     echo
@@ -406,6 +396,8 @@ if [ $RUN_CC_CHECKOUTS = TRUE ]; then
       echo Log directory has been preserved: $DIR
       exit 1
     fi
+  else
+    echo OK
   fi
 else
   echo SKIPPED
@@ -423,11 +415,8 @@ if [ $RUN_CC_HIJACKS = TRUE ]; then
   cleartool ls -recurse $FILE_LIST $DIR_LIST |\
       grep "\[hijacked\]" >\
       $DIR/cc_hijack
-  CC_H=`cat $DIR/cc_hijack | sed -n "$="`
 
-  if [ $CC_H = "0" ]; then
-    echo OK
-  else
+  if [ -s $DIR/cc_hijack ]; then
     PRISTINE=FALSE
     echo FAILURE
     echo
@@ -445,6 +434,8 @@ if [ $RUN_CC_HIJACKS = TRUE ]; then
       echo Log directory has been preserved: $DIR
       exit 1
     fi
+  else
+    echo OK
   fi
 else
   echo SKIPPED
