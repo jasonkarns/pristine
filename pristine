@@ -179,25 +179,12 @@ RUN_CC_UNTRACK=FALSE
 RUN_CC_CHECKOUTS=FALSE
 RUN_CC_HIJACKS=FALSE
 
-if [ "x"`echo $FLAGS | grep w` = "x"$FLAGS ]; then
-  RUN_WRITABLE=TRUE
-fi
-if [ "x"`echo $FLAGS | grep a` = "x"$FLAGS ]; then
-  RUN_ARTIFACTS=TRUE
-fi
-if [ "x"`echo $FLAGS | grep g` = "x"$FLAGS ]; then
-  RUN_GIT_STATUS=TRUE
-fi
-if [ "x"`echo $FLAGS | grep u` = "x"$FLAGS ]; then
-  RUN_CC_UNTRACK=TRUE
-fi
-if [ "x"`echo $FLAGS | grep c` = "x"$FLAGS ]; then
-  RUN_CC_CHECKOUTS=TRUE
-fi
-if [ "x"`echo $FLAGS | grep h` = "x"$FLAGS ]; then
-  RUN_CC_HIJACKS=TRUE
-fi
-
+if [ "x"`echo $FLAGS | grep w` = "x"$FLAGS ]; then RUN_WRITABLE=TRUE;     fi
+if [ "x"`echo $FLAGS | grep a` = "x"$FLAGS ]; then RUN_ARTIFACTS=TRUE;    fi
+if [ "x"`echo $FLAGS | grep g` = "x"$FLAGS ]; then RUN_GIT_STATUS=TRUE;   fi
+if [ "x"`echo $FLAGS | grep u` = "x"$FLAGS ]; then RUN_CC_UNTRACK=TRUE;   fi
+if [ "x"`echo $FLAGS | grep c` = "x"$FLAGS ]; then RUN_CC_CHECKOUTS=TRUE; fi
+if [ "x"`echo $FLAGS | grep h` = "x"$FLAGS ]; then RUN_CC_HIJACKS=TRUE;   fi
 
 ###################################################
 #
@@ -208,15 +195,12 @@ fi
 #
 echo -n Checking \(-w\) Writable Files........\ \ 
 if [ $RUN_WRITABLE = TRUE ]; then
-  find $FILE_LIST $DIR_LIST -type f -perm +220 |\
-      grep -v -f $EXCLUDE >\
-      ${DIR}/gen_writable
+
+  find $FILE_LIST $DIR_LIST -type f -perm +220 | grep -v -f $EXCLUDE > ${DIR}/gen_writable
 
   if [ -s $DIR/gen_writable ]; then
     PRISTINE=FALSE
     echo FAILURE
-    echo
-    echo Snapshot is not pristine
     echo
     echo There exist untracked writable files that ClearCase will consider
     echo hijacked. Files may have been modified, but not checked out.
@@ -336,8 +320,7 @@ fi
 echo -n Checking \(-u\) ClearCase Untracked...\ \ 
 if [ $RUN_CC_UNTRACK = TRUE ]; then
 
-  cleartool ls -recurse -view -short $FILE_LIST $DIR_LIST |\
-      grep -v -f $EXCLUDE > $DIR/cc_untrack
+  cleartool ls -recurse -view -short $FILE_LIST $DIR_LIST | grep -v -f $EXCLUDE > $DIR/cc_untrack
 
   if [ -s $DIR/cc_untrack ]; then
     PRISTINE=FALSE
@@ -373,8 +356,7 @@ fi
 echo -n Checking \(-c\) ClearCase Checkouts...\ \ 
 if [ $RUN_CC_CHECKOUTS = TRUE ]; then
 
-  cleartool lsco -me -recurse -short $FILE_LIST $DIR_LIST >\
-      $DIR/cc_checkout
+  cleartool lsco -me -recurse -short $FILE_LIST $DIR_LIST > $DIR/cc_checkout
 
   if [ -s $DIR/cc_checkout ]; then
     PRISTINE=FALSE
@@ -412,9 +394,7 @@ fi
 echo -n Checking \(-h\) ClearCase Hijacks.....\ \ 
 if [ $RUN_CC_HIJACKS = TRUE ]; then
 
-  cleartool ls -recurse $FILE_LIST $DIR_LIST |\
-      grep "\[hijacked\]" >\
-      $DIR/cc_hijack
+  cleartool ls -recurse $FILE_LIST $DIR_LIST | grep "\[hijacked\]" > $DIR/cc_hijack
 
   if [ -s $DIR/cc_hijack ]; then
     PRISTINE=FALSE
