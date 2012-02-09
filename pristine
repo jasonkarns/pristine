@@ -422,7 +422,7 @@ fi
 # Finished:
 #
 echo
-if [ $PRISTINE = FALSE ]; then
+if [ "$PRISTINE" = FALSE ]; then
   echo FAILURE: Snapshot is not pristine
   echo Log directory has been preserved: $DIR
   exit 1
