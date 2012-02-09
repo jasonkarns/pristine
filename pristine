@@ -289,7 +289,6 @@ if [ $RUN_GIT_STATUS = TRUE ]; then
     PRISTINE=FALSE
     echo FAILURE
     echo
-    echo Git does not consider the repository pristine
     echo We have not bothered to consult ClearCase \(slow\)
     echo
     echo Suggestion: Run git-status add, remove, and commit as
@@ -328,8 +327,6 @@ if [ $RUN_CC_UNTRACK = TRUE ]; then
     PRISTINE=FALSE
     echo FAILURE
     echo
-    echo ClearCase does not consider the repository pristine
-    echo
     echo Suggestion: Run git-status
     echo add, remove, and commit as appropriate
     echo and/or bring ClearCase to a pristine state
@@ -363,8 +360,6 @@ if [ $RUN_CC_CHECKOUTS = TRUE ]; then
   if [ -s $DIR/cc_checkout ]; then
     PRISTINE=FALSE
     echo FAILURE
-    echo
-    echo ClearCase has discovered checkouts
     echo
     echo If the Git status checks were OK, but ClearCase is has
     echo checkouts, it is likely changes have come from
@@ -401,8 +396,6 @@ if [ $RUN_CC_HIJACKS = TRUE ]; then
   if [ -s $DIR/cc_hijack ]; then
     PRISTINE=FALSE
     echo FAILURE
-    echo
-    echo ClearCase does not consider the repository pristine
     echo
     echo Suggestion: Run git-status
     echo add, remove, and commit as appropriate
